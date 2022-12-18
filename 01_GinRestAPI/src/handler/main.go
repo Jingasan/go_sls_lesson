@@ -47,21 +47,21 @@ func init() {
 	// PUTメソッド
 	router.PUT("/user/:name", func(ctx *gin.Context) {
 		// URLパラメータの取得
-        name := ctx.Param("name")
-        ctx.String(http.StatusOK, "Hello %s", name)
+		name := ctx.Param("name")
+		ctx.String(http.StatusOK, "Hello %s", name)
 	})
-    // DELETEメソッド
-    router.DELETE("/user/:name", func(ctx *gin.Context) {
-        ctx.String(200, "OK")
-    })
+	// DELETEメソッド
+	router.DELETE("/user/:name", func(ctx *gin.Context) {
+		ctx.String(200, "OK")
+	})
 	// 各種APIを登録
-    ginLambda = ginadapter.New(router)
+	ginLambda = ginadapter.New(router)
 }
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-    return ginLambda.ProxyWithContext(ctx, req)
+	return ginLambda.ProxyWithContext(ctx, req)
 }
 
 func main() {
-    lambda.Start(Handler)
+	lambda.Start(Handler)
 }

@@ -1,4 +1,4 @@
-service: gin-rest-api
+service: gin-rest-api # サービス名
 frameworkVersion: "3"
 provider:
   name: aws
