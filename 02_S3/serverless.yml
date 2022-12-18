@@ -1,0 +1,35 @@
+service: go-gin-s3 # サービス名
+frameworkVersion: "3"
+provider:
+  name: aws
+  runtime: go1.x
+  stage: v1
+  region: ap-northeast-1 # AWSのRegion(東日本を指定)
+  iam: # AWSのIAM設定
+    role:
+      name: go-gin-s3-role
+      statements:
+        - Effect: Allow
+          Action:
+            - "logs:*"
+            - "s3:*"
+            - "s3-object-lambda:*"
+          Resource:
+            - "*"
+  environment:
+    GIN_MODE: "release"
+# binディレクトリ以下のバイナリファイルだけデプロイする
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+functions:
+  api: # 関数名
+    handler: bin/main # 実行バイナリまでのパス
+    timeout: 30 # APIのタイムアウト時間
+    events:
+      - http:
+          path: /test # API URL
+          method: get # 有効化するメソッド
+          cors: true # CORSを有効化
