@@ -5,11 +5,17 @@ provider:
   runtime: go1.x
   stage: v1
   region: ap-northeast-1 # AWSのRegion(東日本を指定)
-  iamRoleStatements: # AWSのIAM設定
-    - Effect: "Allow"
-      Action:
-        - "logs:*"
-      Resource: "*"
+  iam: # AWSのIAM設定
+    role:
+      name: gin-rest-api-role
+      statements:
+        - Effect: Allow
+          Action:
+            - "logs:*"
+          Resource:
+            - "*"
+  environment:
+    GIN_MODE: "release"
 # binディレクトリ以下のバイナリファイルだけデプロイする
 package:
   exclude:
