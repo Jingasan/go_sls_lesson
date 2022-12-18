@@ -1,0 +1,27 @@
+service: gin-rest-api
+frameworkVersion: "3"
+provider:
+  name: aws
+  runtime: go1.x
+  stage: v1
+  region: ap-northeast-1 # AWSのRegion(東日本を指定)
+  iamRoleStatements: # AWSのIAM設定
+    - Effect: "Allow"
+      Action:
+        - "logs:*"
+      Resource: "*"
+# binディレクトリ以下のバイナリファイルだけデプロイする
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+functions:
+  api: # 関数名
+    handler: bin/main # 実行バイナリまでのパス
+    timeout: 30 # APIのタイムアウト時間
+    events:
+      - http:
+          path: /user/{any+} # API URL
+          method: ANY # 全メソッドを有効化
+          cors: true # CORSを有効化
